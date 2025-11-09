@@ -399,9 +399,6 @@ MonoBehaviour:
   pitchDeadZoneLow: 0.45
   pitchDeadZoneHigh: 0.55
   minVolumeToMove: 0.05
-  minVolumeToJump: 0.25
-  jumpForceMin: 0.5
-  jumpForceMax: 1
   poseJumpCooldown: 1
 --- !u!4 &1001887220
 Transform:
@@ -1062,6 +1059,7 @@ MonoBehaviour:
   maxSpeed: 5
   maxJumpForce: 10
   jumpCooldown: 0.5
+  yourPitch: 700
 --- !u!95 &1909249340
 Animator:
   serializedVersion: 5

@@ -57,7 +57,7 @@ public class PoseReceiver : MonoBehaviour
                 float volume = latestPose?.voice?.volume ?? 0f;
                 float pitch = latestPose?.voice?.pitch ?? 0f;
                 bool isSpeech = latestPose?.voice?.isSpeech ?? false;
-                Debug.Log($"Received landmarks={count}, volume={volume:F2}pitch={pitch:F2}, isSpeech={isSpeech}");
+                // Debug.Log($"Received landmarks={count}, volume={volume:F2},pitch={pitch:F2}, isSpeech={isSpeech}");
             }
             catch (System.Exception e)
             {

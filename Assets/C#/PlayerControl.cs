@@ -9,13 +9,14 @@ public class PlayerControl : MonoBehaviour
     private Animator anim;
 
     [Header("Movement Settings")]
-    public float maxSpeed = 5f;
+    public float maxSpeed = 3f;
     public float maxJumpForce = 10f;
 
     // 跳跃控制
     private bool canJump = true;
     private float lastJumpTime = 0f;
     public float jumpCooldown = 0.3f;
+    public float yourPitch = 800f;
 
     void Start()
     {
@@ -53,7 +54,9 @@ public class PlayerControl : MonoBehaviour
     }
     public void Move(float direction, float speedMultiplier)
     {
+        // rb.velocity = new Vector2(direction * maxSpeed * speedMultiplier, rb.velocity.y);
         rb.velocity = new Vector2(direction * maxSpeed * speedMultiplier, rb.velocity.y);
+
     }
 
     // 跳跃
