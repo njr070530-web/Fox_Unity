@@ -19,15 +19,15 @@
     克隆仓库
 
     ``git clone https://github.com/njr070530-web/Fox_Unity.git
-cd Fox_Unity``
+cd Fox_Unity``这里改成你自己fork的仓库，你可以直接去GitHub你的仓库那里按绿色的code然后复制，我给你演示了的
 
 
-  查看分支
+      查看分支
 
-  ``git branch -a``
+      ``git branch -a``
 
 
-==主分支是 main，不要直接在上面开发！==
+**主分支是 main，不要直接在上面开发！**
 
 2. 创建自己的分支
 
@@ -69,7 +69,7 @@ cd Fox_Unity``
 
 - 点击 “Compare & pull request”
 
-- 说明你修改了什么，让负责人审核后合并到 main
+- **说明你修改了什么，让负责人审核后合并到 main**
 
-==⚠️ 不要直接在 main 分支 push！
-所有更改请先通过 PR（Pull Request）合并。==
+**⚠️ 不要直接在 main 分支 push！
+所有更改请先通过 PR（Pull Request）合并。**
