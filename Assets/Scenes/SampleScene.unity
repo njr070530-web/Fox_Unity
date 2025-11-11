@@ -400,6 +400,8 @@ MonoBehaviour:
   pitchDeadZoneHigh: 0.55
   minVolumeToMove: 0.05
   poseJumpCooldown: 1
+  attackCooldown: 0.5
+  attackThreshold: 0.2
 --- !u!4 &1001887220
 Transform:
   m_ObjectHideFlags: 0
@@ -490,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 1533018812}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.02, y: -0.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -962,7 +964,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 3
   m_AngularDrag: 0.05
   m_GravityScale: 5
   m_Material: {fileID: 0}
@@ -1037,8 +1039,8 @@ Transform:
   m_GameObject: {fileID: 1909249334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.58, y: 0.01, z: 0}
-  m_LocalScale: {x: 3.97644, y: 3.97644, z: 3.97644}
+  m_LocalPosition: {x: -6.3981, y: -0.206, z: 0}
+  m_LocalScale: {x: 5.079107, y: 5.326839, z: 3.97644}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 519420032}
@@ -1056,9 +1058,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec15af1f8e0e6b248a780cad8a99526b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  maxJumpForce: 10
+  maxSpeed: 10
+  maxJumpForce: 20
   jumpCooldown: 0.5
+  attackDuration: 0.4
   yourPitch: 700
 --- !u!95 &1909249340
 Animator:

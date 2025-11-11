@@ -7,50 +7,72 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Animator anim;
+    // provate BoxCollider2D coll;
 
     [Header("Movement Settings")]
     public float maxSpeed = 3f;
-    public float maxJumpForce = 10f;
+    public float maxJumpForce = 50f;
 
     // 跳跃控制
     private bool canJump = true;
+    private bool is_attacking = false;
     private float lastJumpTime = 0f;
     public float jumpCooldown = 0.3f;
-    public float yourPitch = 800f;
+    public float attackDuration = 0.8f;
+    public float yourPitch = 600f;
+    private enum MovementState {idle,running,jumping,falling,attacking};
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        // coll=GetComponent<BoxCollider2D>();
     }
 
     void UpdateAnimationState()
     {
+        MovementState state;
         // 控制跑步动画和朝向
         if (rb.velocity.x > 0.01f)
         {
-            anim.SetBool("running", true);
+            state = MovementState.running;
             sprite.flipX = false;
         }
         else if (rb.velocity.x < -0.01f)
         {
-            anim.SetBool("running", true);
+            state = MovementState.running;
             sprite.flipX = true;
         }
         else
         {
-            anim.SetBool("running", false);
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            state = MovementState.idle;
         }
 
         // 跳跃动画
-        anim.SetBool("jumping", !canJump);
+        if (rb.velocity.y > 0.1f)
+        {
+            state = MovementState.jumping;
+        }
+        else if (rb.velocity.y < -0.1f)
+        {
+            state = MovementState.falling;
+        }
+        if (is_attacking)
+        {
+            state = MovementState.attacking;
+        }
+        anim.SetInteger("state", (int)state);
     }
 
     // 水平移动
     public void Idle()
     {
         rb.velocity = new Vector2(0, rb.velocity.y);
+        anim.SetBool("running", false);
+        anim.SetBool("attack_bool", false);
+
     }
     public void Move(float direction, float speedMultiplier)
     {
@@ -69,6 +91,26 @@ public class PlayerControl : MonoBehaviour
         canJump = false;
         lastJumpTime = Time.time;
     }
+
+    public bool IsAttacking()
+{
+    return is_attacking;
+}
+
+public void Attack()
+{
+    if (is_attacking) return; // 防重入
+    is_attacking = true;
+    // 这里你可以播放音效或设置anim参数
+    anim.SetInteger("state", (int)MovementState.attacking); // 立即同步动画（可选）
+    StartCoroutine(ResetAttack());
+}
+
+private IEnumerator ResetAttack()
+{
+    yield return new WaitForSeconds(attackDuration);
+    is_attacking = false;
+}
 
     void Update()
     {
