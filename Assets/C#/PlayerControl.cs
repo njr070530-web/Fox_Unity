@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     public float jumpCooldown = 0.3f;
     public float attackDuration = 0.8f;
     public float yourPitch = 600f;
-    private enum MovementState {idle,running,jumping,falling,attacking};
+    private enum MovementState {idle,running,jumping,falling,attacking,hurt,die};
 
     void Start()
     {

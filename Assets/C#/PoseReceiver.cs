@@ -72,4 +72,13 @@ public class PoseReceiver : MonoBehaviour
             receiveThread.Abort();
         udp.Close();
     }
+        void OnDestroy()
+    {
+        if (udp != null)
+        {
+            udp.Close();
+            udp = null;
+            Debug.Log("✅ UDP socket closed (OnDestroy)");
+        }
+    }
 }
