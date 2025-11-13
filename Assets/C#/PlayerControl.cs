@@ -13,13 +13,19 @@ public class PlayerControl : MonoBehaviour
     public float maxSpeed = 3f;
     public float maxJumpForce = 50f;
 
+    [SerializeField] private AudioSource jumpSoundEffect;
+    [SerializeField] private AudioSource attackSoundEffect;
+
+
+
+
     // 跳跃控制
     private bool canJump = true;
     private bool is_attacking = false;
     private float lastJumpTime = 0f;
     public float jumpCooldown = 0.3f;
     public float attackDuration = 0.8f;
-    public float yourPitch = 600f;
+    public float yourPitch = 400f;
     private enum MovementState {idle,running,jumping,falling,attacking,hurt,die};
 
     void Start()
@@ -86,7 +92,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!canJump) return;
         if (Time.time - lastJumpTime < jumpCooldown) return;
-
+        jumpSoundEffect.Play();
         rb.velocity = new Vector2(rb.velocity.x, maxJumpForce * forceMultiplier);
         canJump = false;
         lastJumpTime = Time.time;
@@ -102,6 +108,7 @@ public void Attack()
     if (is_attacking) return; // 防重入
     is_attacking = true;
     // 这里你可以播放音效或设置anim参数
+    attackSoundEffect.Play();
     anim.SetInteger("state", (int)MovementState.attacking); // 立即同步动画（可选）
     StartCoroutine(ResetAttack());
 }
