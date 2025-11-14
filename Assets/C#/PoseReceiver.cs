@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class PoseReceiver : MonoBehaviour
 {
-    public int port = 5005;  // Python UDP 端口
+    public int port = 5005;
     private UdpClient udp;
     private Thread receiveThread;
 
@@ -24,14 +24,14 @@ public class PoseReceiver : MonoBehaviour
     [System.Serializable]
     public class PoseData
     {
-        public Dictionary<string, float[]> landmarks; // key = "LEFT_WRIST", value = [x,y,z,visibility]
-        public VoiceData voice;                      // 新增：语音数据
+        public Dictionary<string, float[]> landmarks;
+        public VoiceData voice;
         public float timestamp;
         public int width;
         public int height;
     }
 
-    public PoseData latestPose;  // 存储最近一次完整数据
+    public PoseData latestPose;
 
     void Start()
     {
@@ -44,41 +44,73 @@ public class PoseReceiver : MonoBehaviour
     void ReceiveData()
     {
         IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, port);
+
         while (true)
         {
             try
             {
-                byte[] data = udp.Receive(ref anyIP);
-                string json = Encoding.UTF8.GetString(data);
-                latestPose = JsonConvert.DeserializeObject<PoseData>(json);
+                if (udp == null)  // ⭐ 防止已经被 OnDestroy 关闭时继续 Receive
+                    return;
 
-                // 输出调试
-                int count = latestPose?.landmarks?.Count ?? 0;
-                float volume = latestPose?.voice?.volume ?? 0f;
-                float pitch = latestPose?.voice?.pitch ?? 0f;
-                bool isSpeech = latestPose?.voice?.isSpeech ?? false;
-                // Debug.Log($"Received landmarks={count}, volume={volume:F2},pitch={pitch:F2}, isSpeech={isSpeech}");
+                byte[] data = udp.Receive(ref anyIP);
+                if (data == null || data.Length == 0)
+                    continue;
+
+                string json = Encoding.UTF8.GetString(data);
+                if (string.IsNullOrEmpty(json))
+                    continue;
+
+                // ⭐ 解析 JSON（可能为 null）
+                PoseData pose = JsonConvert.DeserializeObject<PoseData>(json);
+                if (pose == null)
+                {
+                    Debug.LogWarning("⚠ Received invalid JSON (pose == null)");
+                    continue;
+                }
+
+                // ⭐ landmarks 可能为 null，确保不报错
+                if (pose.landmarks == null)
+                {
+                    pose.landmarks = new Dictionary<string, float[]>();
+                }
+
+                latestPose = pose;
+
+                // (可选) 调试输出安全访问
+                // int count = pose.landmarks.Count;
+                // float volume = pose.voice?.volume ?? 0f;
+            }
+            catch (SocketException)
+            {
+                // ⭐ udp.Close() 后会进这里，不再报错
+                Debug.Log("UDP socket closed, thread ending.");
+                return;
             }
             catch (System.Exception e)
             {
-                Debug.LogError("UDP receive error: " + e);
+                Debug.LogWarning("UDP receive error (handled): " + e.Message);
+                Thread.Sleep(5); // ⭐ 防止刷屏
             }
         }
     }
 
     void OnApplicationQuit()
     {
+        if (udp != null)
+        {
+            udp.Close();
+            udp = null;
+        }
         if (receiveThread != null && receiveThread.IsAlive)
             receiveThread.Abort();
-        udp.Close();
     }
-        void OnDestroy()
+
+    void OnDestroy()
     {
         if (udp != null)
         {
             udp.Close();
             udp = null;
-            Debug.Log("✅ UDP socket closed (OnDestroy)");
         }
     }
 }

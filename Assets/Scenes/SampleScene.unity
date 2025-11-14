@@ -281,9 +281,10 @@ GameObject:
   - component: {fileID: 531162140}
   - component: {fileID: 531162139}
   - component: {fileID: 531162138}
-  m_Layer: 0
+  - component: {fileID: 531162143}
+  m_Layer: 3
   m_Name: Slimmer
-  m_TagString: Slimmer
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -442,12 +443,24 @@ Transform:
   m_GameObject: {fileID: 531162137}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.86, y: 2.13, z: 0}
+  m_LocalPosition: {x: -6.54, y: 0.32, z: 0}
   m_LocalScale: {x: 3.4187, y: 3.4297, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &531162143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531162137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05cecf86ec63b6d4386a6378e8a35512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &764236574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,12 +1272,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec15af1f8e0e6b248a780cad8a99526b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
   maxSpeed: 10
   maxJumpForce: 20
   jumpSoundEffect: {fileID: 1909249343}
   attackSoundEffect: {fileID: 1909249342}
   jumpCooldown: 0.5
   attackDuration: 0.4
+  attackCooldown: 0.3
   yourPitch: 700
 --- !u!95 &1909249340
 Animator:

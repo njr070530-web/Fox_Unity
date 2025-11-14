@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     private Rigidbody2D rb;
+    public float attackRange = 100.0f;
+
     private SpriteRenderer sprite;
     private Animator anim;
+    public LayerMask enemyLayer;
     // provate BoxCollider2D coll;
 
     [Header("Movement Settings")]
@@ -25,6 +28,9 @@ public class PlayerControl : MonoBehaviour
     private float lastJumpTime = 0f;
     public float jumpCooldown = 0.3f;
     public float attackDuration = 0.8f;
+
+    private bool canAttack = true;
+    public float attackCooldown = 0.3f;
     public float yourPitch = 400f;
     private enum MovementState {idle,running,jumping,falling,attacking,hurt,die};
 
@@ -103,14 +109,30 @@ public class PlayerControl : MonoBehaviour
     return is_attacking;
 }
 
+
 public void Attack()
 {
-    if (is_attacking) return; // 防重入
+    if (is_attacking) return;
     is_attacking = true;
-    // 这里你可以播放音效或设置anim参数
     attackSoundEffect.Play();
-    anim.SetInteger("state", (int)MovementState.attacking); // 立即同步动画（可选）
+    canAttack = false;
+    anim.SetInteger("state",(int)MovementState.attacking);
+
+    Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayer);
+    foreach (var hit in hits)
+    {
+        Debug.Log($"Hit: {hit.name}");
+        if (hit.CompareTag("Enemy"))
+            hit.GetComponent<Enemy>().Die();
+    }
+
     StartCoroutine(ResetAttack());
+}
+
+IEnumerator AttackCooldown()
+{
+    yield return new WaitForSeconds(attackCooldown);
+    canAttack = true;
 }
 
 private IEnumerator ResetAttack()
