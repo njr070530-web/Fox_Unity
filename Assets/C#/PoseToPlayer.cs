@@ -15,8 +15,8 @@ public class PoseToPlayer : MonoBehaviour
 
     void Start()
     {
-        pitchDeadZoneLow = player.yourPitch - 150.0f;
-        pitchDeadZoneHigh = player.yourPitch + 150.0f;
+        // pitchDeadZoneLow = player.yourPitch - 150.0f;
+        // pitchDeadZoneHigh = player.yourPitch + 150.0f;
     }
 
     [Header("姿势控制")]
@@ -33,6 +33,9 @@ public class PoseToPlayer : MonoBehaviour
 
     void Update()
     {
+
+        pitchDeadZoneLow = player.yourPitch - 150.0f;
+        pitchDeadZoneHigh = player.yourPitch + 150.0f;
         var data = poseReceiver.latestPose;
         if (data == null) return;
 
@@ -40,7 +43,7 @@ public class PoseToPlayer : MonoBehaviour
 
         // ------------------- 🎤 人声控制（保持原样） -------------------
         var voice = data.voice;
-        if (voice != null && voice.isSpeech && voice.pitch > 500.0f)
+        if (voice != null && voice.isSpeech && voice.pitch > 300.0f)
         {
             float pitchNormalized = Mathf.Clamp((voice.pitch - pitchDeadZoneLow) / (pitchDeadZoneHigh - pitchDeadZoneLow), 0f, 1f);
             float direction = pitchNormalized * 2f - 1f; // -1 左，0 静止，1 右

@@ -143,6 +143,24 @@ private IEnumerator ResetAttack()
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump(1.0f);
+        }
+
+         if(Input.GetKey(KeyCode.D))
+        {
+            Move(1.0f,1.0f);
+        }
+        if(Input.GetKey(KeyCode.S))
+        {
+            Attack();
+        }
+        else if(Input.GetKey(KeyCode.A))
+        {
+            Move(-1.0f,1.0f);
+        }
+
         // 落地检测
         if (!canJump && Mathf.Abs(rb.velocity.y) < 0.01f)
         {
