@@ -11,6 +11,8 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     public int health = 3;
+    public HealthUI healthUI;
+
 
     [SerializeField] private AudioSource dieSoundEffect;
 
@@ -20,6 +22,8 @@ public class PlayerLife : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        healthUI.UpdateHearts(health);
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -35,6 +39,8 @@ public class PlayerLife : MonoBehaviour
         anim.SetTrigger("hurt");
         Debug.Log($"💔 Hurt! Current HP = {health}");
         health -= 1;
+        healthUI.UpdateHearts(health);
+
 
         if (health <= 0)
         {
