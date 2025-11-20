@@ -81,12 +81,12 @@ public class PoseToPlayer : MonoBehaviour
         }
 
         // 攻击判定：需要 LEFT_WRIST 和 RIGHT_ELBOW，两者足够靠近且左手**没有举起**
-        if (lm != null && lm.ContainsKey("LEFT_WRIST") && lm.ContainsKey("RIGHT_ELBOW"))
+        if (lm != null && lm.ContainsKey("LEFT_WRIST") && lm.ContainsKey("RIGHT_WRIST"))
         {
             if (!leftRaised && Time.time - lastAttackTime > attackCooldown && !player.IsAttacking())
             {
                 var leftWrist = lm["LEFT_WRIST"];
-                var rightElbow = lm["RIGHT_ELBOW"];
+                var rightElbow = lm["RIGHT_WRIST"];
 
                 float dx = leftWrist[0] - rightElbow[0];
                 float dy = leftWrist[1] - rightElbow[1];
